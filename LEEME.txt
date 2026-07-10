@@ -1,0 +1,28 @@
+VERAMAR STAFF — APP MÓVIL
+
+Incluye:
+- Registro de turnos.
+- Cálculo automático de horas.
+- Turnos que terminan después de medianoche.
+- Evita duplicados por empleado + fecha + turno.
+- Edición y borrado.
+- Resumen mensual.
+- Gestión de empleados.
+- Exportación CSV compatible con Excel.
+- Funcionamiento sin conexión una vez instalada.
+
+IMPORTANTE:
+Los datos se guardan en el navegador del móvil. Para no perderlos, utiliza
+regularmente el botón “Exportar CSV”.
+
+PARA INSTALARLA:
+1. Sube toda esta carpeta a un alojamiento web gratuito con HTTPS
+   (por ejemplo GitHub Pages, Netlify o Cloudflare Pages).
+2. Abre la dirección publicada desde Chrome en el móvil.
+3. Pulsa “Instalar” o “Añadir a pantalla de inicio”.
+
+Para probar en el ordenador:
+- No abras index.html con doble clic si quieres probar la instalación.
+- Inicia un servidor local dentro de la carpeta:
+  python -m http.server 8000
+- Abre http://localhost:8000
