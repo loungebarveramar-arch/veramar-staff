@@ -14,7 +14,8 @@ const DEFAULT_EMPLOYEES = [
 
 let editingId = null;
 let deferredPrompt = null;
-
+const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyjthvvjTFV3I5ovk7lGzNuDQgTa3qUEriLfb9HWEKzixIhNxwLS-WHBOC0u7LmyH5uYA/exec";
 function loadEmployees() {
   const saved = JSON.parse(
     localStorage.getItem("veramar_employees") || "[]"
@@ -131,38 +132,99 @@ function resetForm(){
   // Colocar el cursor otra vez en empleado
   $("empleado").focus();
 }
-function saveTurn(){
-  const empleado=$("empleado").value;
-  const fecha=$("fecha").value;
-  const turno=$("turno").value;
-  const entrada=normalizeTime($("entrada").value);
-  const salida=normalizeTime($("salida").value);
-  const observaciones=$("observaciones").value.trim();
+async function guardarEnGoogleSheets(registro) {
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify(registro)
+    });
 
-  if(!empleado || !fecha || !entrada || !salida){
-    showMessage("Completa empleado, fecha, entrada y salida.",false); return;
+    return true;
+  } catch (error) {
+    console.error("Error al guardar online:", error);
+    return false;
   }
-  const horas=calcHours(entrada,salida);
-  const records=loadRecords();
+}
+async function saveTurn() {
+  const empleado = $("empleado").value;
+  const fecha = $("fecha").value;
+  const turno = $("turno").value;
+  const entrada = normalizeTime($("entrada").value);
+  const salida = normalizeTime($("salida").value);
+  const observaciones = $("observaciones").value.trim();
 
-  const duplicate=records.some(r =>
-    r.id!==editingId && r.empleado===empleado && r.fecha===fecha && r.turno===turno
+  if (!empleado || !fecha || !turno || !entrada || !salida) {
+    showMessage(
+      "Completa empleado, fecha, turno, entrada y salida.",
+      false
+    );
+    return;
+  }
+
+  const horas = calcHours(entrada, salida);
+  const records = loadRecords();
+
+  const duplicate = records.some(
+    (r) =>
+      r.id !== editingId &&
+      r.empleado === empleado &&
+      r.fecha === fecha &&
+      r.turno === turno
   );
-  if(duplicate){
-    showMessage("Ya existe ese empleado, fecha y turno.",false); return;
+
+  if (duplicate) {
+    showMessage(
+      "Ya existe ese empleado, fecha y turno.",
+      false
+    );
+    return;
   }
 
-  const item={
+  const item = {
     id: editingId || crypto.randomUUID(),
-    empleado,fecha,turno,entrada,salida,horas,observaciones,
-    fechaRegistro:new Date().toISOString()
+    empleado: empleado,
+    fecha: fecha,
+    turno: turno,
+    entrada: entrada,
+    salida: salida,
+    horas: horas,
+    observaciones: observaciones,
+    fechaRegistro: new Date().toISOString()
   };
-  const idx=records.findIndex(r=>r.id===editingId);
-  if(idx>=0) records[idx]=item; else records.push(item);
+
+  $("guardarBtn").disabled = true;
+  $("guardarBtn").textContent = "Guardando...";
+
+  const guardadoOnline = await guardarEnGoogleSheets(item);
+
+  if (!guardadoOnline) {
+    $("guardarBtn").disabled = false;
+    $("guardarBtn").textContent = "Guardar turno";
+
+    showMessage(
+      "No se pudo conectar. Comprueba Internet.",
+      false
+    );
+    return;
+  }
+
+  const idx = records.findIndex((r) => r.id === editingId);
+
+  if (idx >= 0) {
+    records[idx] = item;
+  } else {
+    records.push(item);
+  }
+
   saveRecords(records);
-  showMessage(idx>=0?"Registro modificado.":"Turno guardado.");
+
+  showMessage("Turno guardado online correctamente.");
+
   resetForm();
   renderAll();
+
+  $("guardarBtn").disabled = false;
 }
 function editRecord(id){
   const r=loadRecords().find(x=>x.id===id);
