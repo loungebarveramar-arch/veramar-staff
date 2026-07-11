@@ -2,19 +2,32 @@
 const $ = (id) => document.getElementById(id);
 
 const DEFAULT_EMPLOYEES = [
-  "MAR MORENO",
+  "ABDOU TAMBAJAN",
+  "CESAR",
   "FELIPE CORDEIRO",
-  "ZAKARIA",
-  "ABDOU",
-  "MUSA"
+  "LAURA",
+  "MAR MORENO",
+  "MARTINA COMACHI",
+  "MOUSSA SISOKKO",
+  "ZAKARIA BANANE"
 ];
 
 let editingId = null;
 let deferredPrompt = null;
 
-function loadEmployees(){
-  const saved = JSON.parse(localStorage.getItem("veramar_employees") || "null");
-  return Array.isArray(saved) && saved.length ? saved : DEFAULT_EMPLOYEES;
+function loadEmployees() {
+  const saved = JSON.parse(
+    localStorage.getItem("veramar_employees") || "[]"
+  );
+
+  const combined = [
+    ...DEFAULT_EMPLOYEES,
+    ...(Array.isArray(saved) ? saved : [])
+  ];
+
+  return [...new Set(combined)].sort((a, b) =>
+    a.localeCompare(b, "es")
+  );
 }
 function saveEmployees(list){
   localStorage.setItem("veramar_employees", JSON.stringify(list));
@@ -50,34 +63,43 @@ function fmtHours(n){ return Number(n||0).toFixed(2).replace(".",","); }
 function todayISO(){ return new Date().toISOString().slice(0,10); }
 function monthKey(date){ return date.slice(0,7); }
 
-function refreshEmployeeSelects(){
+function refreshEmployeeSelects() {
   const employees = loadEmployees();
 
   const empleado = $("empleado");
   const resumen = $("resumenEmpleado");
+  const resumenActual = resumen.value;
 
   empleado.innerHTML = "";
 
-  const primero = document.createElement("option");
-  primero.value = "";
-  primero.textContent = "Seleccionar empleado";
-  empleado.appendChild(primero);
+  const opcionVacia = document.createElement("option");
+  opcionVacia.value = "";
+  opcionVacia.textContent = "SELECCIONA EMPLEADO";
+  opcionVacia.selected = true;
+  opcionVacia.disabled = true;
+  empleado.appendChild(opcionVacia);
 
-  employees.forEach(name=>{
-    const o=document.createElement("option");
-    o.value=name;
-    o.textContent=name;
-    empleado.appendChild(o);
+  employees.forEach((name) => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    empleado.appendChild(option);
   });
 
-  resumen.innerHTML="";
+  resumen.innerHTML = "";
 
-  employees.forEach(name=>{
-    const o=document.createElement("option");
-    o.value=name;
-    o.textContent=name;
-    resumen.appendChild(o);
+  employees.forEach((name) => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    resumen.appendChild(option);
   });
+
+  if (resumenActual && employees.includes(resumenActual)) {
+    resumen.value = resumenActual;
+  }
+
+  empleado.value = "";
 
   renderEmployeeList();
 }
