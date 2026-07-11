@@ -93,16 +93,20 @@ function showMessage(text,ok=true){
 function resetForm(){
   editingId = null;
 
-  $("empleado").selectedIndex = 0;
+  // Dejar sin empleado seleccionado
+  $("empleado").selectedIndex = -1;
 
+  // Preparar un formulario nuevo
   $("fecha").value = todayISO();
-  $("turno").value = "COMIDA";
+  $("turno").selectedIndex = -1;
   $("entrada").value = "";
   $("salida").value = "";
   $("observaciones").value = "";
   $("horas").textContent = "0,00";
+
   $("guardarBtn").textContent = "Guardar turno";
 
+  // Colocar el cursor otra vez en empleado
   $("empleado").focus();
 }
 function saveTurn(){
