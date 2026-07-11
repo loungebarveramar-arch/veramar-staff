@@ -52,15 +52,33 @@ function monthKey(date){ return date.slice(0,7); }
 
 function refreshEmployeeSelects(){
   const employees = loadEmployees();
-  for(const id of ["empleado","resumenEmpleado"]){
-    const sel = $(id);
-    const current = sel.value;
-    sel.innerHTML = "";
-    employees.forEach(name=>{
-      const o=document.createElement("option");o.value=name;o.textContent=name;sel.appendChild(o);
-    });
-    if(employees.includes(current)) sel.value=current;
-  }
+
+  const empleado = $("empleado");
+  const resumen = $("resumenEmpleado");
+
+  empleado.innerHTML = "";
+
+  const primero = document.createElement("option");
+  primero.value = "";
+  primero.textContent = "Seleccionar empleado";
+  empleado.appendChild(primero);
+
+  employees.forEach(name=>{
+    const o=document.createElement("option");
+    o.value=name;
+    o.textContent=name;
+    empleado.appendChild(o);
+  });
+
+  resumen.innerHTML="";
+
+  employees.forEach(name=>{
+    const o=document.createElement("option");
+    o.value=name;
+    o.textContent=name;
+    resumen.appendChild(o);
+  });
+
   renderEmployeeList();
 }
 function updateHours(){
@@ -73,14 +91,19 @@ function showMessage(text,ok=true){
   $("mensaje").style.color=ok?"#067647":"#B42318";
 }
 function resetForm(){
-  editingId=null;
-  $("fecha").value=todayISO();
-  $("turno").value="COMIDA";
-  $("entrada").value="";
-  $("salida").value="";
-  $("observaciones").value="";
-  $("horas").textContent="0,00";
-  $("guardarBtn").textContent="Guardar turno";
+  editingId = null;
+
+  $("empleado").selectedIndex = 0;
+
+  $("fecha").value = todayISO();
+  $("turno").value = "COMIDA";
+  $("entrada").value = "";
+  $("salida").value = "";
+  $("observaciones").value = "";
+  $("horas").textContent = "0,00";
+  $("guardarBtn").textContent = "Guardar turno";
+
+  $("empleado").focus();
 }
 function saveTurn(){
   const empleado=$("empleado").value;
