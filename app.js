@@ -1,7 +1,6 @@
 const $ = (id) => document.getElementById(id);
 
-const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycby70Yaaovp03stM3x5QujgqOT9GzNseLCLIzj_1J2KoKUQ8eXLuTc58-Ui1Y6pVYUmDIA/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwd9AjY0V61FQivKYkrz2AILPUfv3Dxao_ECBzO1sta3Ho45eo_Ci2NTkUnE6dGL85r/exec";
 
 const DEFAULT_EMPLOYEES = [
   "ABDOU TAMBAJAN",
