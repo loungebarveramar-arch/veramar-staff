@@ -1,11 +1,10 @@
 {
   "name": "VERAMAR STAFF",
   "short_name": "VERAMAR",
-  "start_url": "./",
+  "start_url": "./?v=4-final",
   "display": "standalone",
   "background_color": "#F4F7FA",
   "theme_color": "#17365D",
-  "description": "Control horario móvil de Lounge Bar Veramar",
   "icons": [
     {
       "src": "icon-192.svg",
