@@ -351,7 +351,46 @@ function addEmployee() {
   refreshEmployeeSelects();
   renderAll();
 }
+async function sincronizarRegistrosAntiguos() {
+  const records = loadRecords();
 
+  if (!records.length) {
+    showMessage("No hay registros antiguos en el móvil.", false);
+    return;
+  }
+
+  let enviados = 0;
+
+  showMessage("Enviando registros antiguos...", true);
+
+  for (const record of records) {
+    if (record.sincronizadoOnline === true) {
+      continue;
+    }
+
+    const guardado = await saveOnline(record);
+
+    if (guardado) {
+      record.sincronizadoOnline = true;
+      enviados++;
+    }
+  }
+
+  saveRecords(records);
+
+  showMessage(
+    enviados > 0
+      ? `${enviados} registros antiguos enviados.`
+      : "Los registros ya estaban sincronizados.",
+    true
+  );
+
+  alert(
+    enviados > 0
+      ? `Se han enviado ${enviados} registros antiguos.`
+      : "No había registros pendientes."
+  );
+}
 function renderAll() {
   renderRecords();
   renderSummary();
@@ -359,6 +398,7 @@ function renderAll() {
 
 $("guardarBtn").onclick = saveTurn;
 $("exportarBtn").onclick = exportCSV;
+$("sincronizarBtn").onclick = sincronizarRegistrosAntiguos;
 $("anadirEmpleadoBtn").onclick = addEmployee;
 
 $("entrada").addEventListener("blur", () => {
