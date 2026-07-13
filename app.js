@@ -1,5 +1,5 @@
 const $=id=>document.getElementById(id);
-const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwd9AjY0V61FQivKYkrz2AILPUfv3Dxao_ECBzO1sta3Ho45eo_Ci2NTkUnE6dGL85r/exec";
+const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwklJqyvIhG_kU6gfba5jPa9ZawJ1HghkaMir9dkHRS8qbZBev2HkAqAj5fIw_l6FWr/exec";
 const DEFAULT_EMPLOYEES=["ABDOU TAMBAJAN","CAMARERO 1","CAMARERO 2","CESAR","FELIPE CORDEIRO","LAURA","MAR MORENO","MARTINA COMACHI","MOUSSA SISOKKO","ZAKARIA BANANE"];
 let editingId=null,deferredPrompt=null,syncInProgress=false;
 
