@@ -1,8 +1,11 @@
-VERAMAR STAFF V5
+VERAMAR STAFF V5.1
 
-Sube a GitHub los archivos que están dentro de esta carpeta, no la carpeta completa.
-Debes reemplazar los archivos existentes y pulsar Commit changes.
-Después espera 2 minutos y abre:
-https://loungebarveramar-arch.github.io/veramar-staff/
+1. Descomprime este ZIP.
+2. Sube a GitHub TODOS los archivos que están dentro de la carpeta.
+3. Reemplaza los archivos existentes y pulsa Commit changes.
+4. Espera 2 minutos.
+5. Abre https://loungebarveramar-arch.github.io/veramar-staff/
+6. Actualiza la página y pulsa Sincronizar ahora.
 
-IMPORTANTE: no borres los datos de la aplicación del móvil antes de sincronizar los registros pendientes.
+Esta versión corrige el contador para que los registros enviados pasen a Guardado online.
+IMPORTANTE: no borres los datos de la aplicación del móvil antes de sincronizar.

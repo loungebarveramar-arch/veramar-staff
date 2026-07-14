@@ -1,4 +1,4 @@
-const CACHE_NAME = "veramar-staff-v5";
+const CACHE_NAME = "veramar-staff-v5-1";
 
 const APP_FILES = [
   "./",
