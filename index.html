@@ -1,72 +1,130 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#17365D">
-<title>VERAMAR STAFF</title>
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#173f6b">
+  <meta name="description" content="Control horario del personal de Veramar">
+  <title>VERAMAR STAFF</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.svg">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="app-header">
-  <div><h1>VERAMAR STAFF</h1><p>Control horario</p></div>
-  <button id="installBtn" class="secondary hidden">Instalar</button>
-</header>
-<main>
-<section class="card">
-  <div class="section-title"><h2>Registrar turno</h2><span id="onlineBadge" class="badge">Comprobando…</span></div>
-  <label>Empleado<select id="empleado"></select></label>
-  <div class="grid2">
-    <label>Fecha<input id="fecha" type="date"></label>
-    <label>Turno<select id="turno"><option>COMIDA</option><option>CENA</option><option>PARTIDO</option></select></label>
-  </div>
-  <div class="grid2">
-    <label>Entrada<input id="entrada" type="text" inputmode="numeric" placeholder="12 o 1230"></label>
-    <label>Salida<input id="salida" type="text" inputmode="numeric" placeholder="16 o 1630"></label>
-  </div>
-  <label>Observaciones<textarea id="observaciones" rows="2"></textarea></label>
-  <div class="hours-box"><span>Horas</span><strong id="horas">0,00</strong></div>
-  <button id="guardarBtn" class="primary">Guardar turno</button>
-  <p id="mensaje" class="message"></p>
-</section>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <h1>VERAMAR STAFF</h1>
+      <p>Control horario</p>
+    </div>
+  </header>
 
-<section class="card">
-  <div class="section-title"><h2>Sincronización</h2><button id="sincronizarBtn" class="secondary">Sincronizar ahora</button></div>
-  <div class="summary">
-    <div><span>Pendientes</span><strong id="pendientes">0</strong></div>
-    <div><span>Guardados online</span><strong id="sincronizados">0</strong></div>
-  </div>
-</section>
+  <main class="container">
+    <section class="card">
+      <div class="section-head">
+        <h2>Registrar turno</h2>
+        <span id="onlineBadge" class="badge">Comprobando…</span>
+      </div>
 
-<section class="card">
-  <div class="section-title"><h2>Resumen del mes</h2><select id="resumenEmpleado"></select></div>
-  <div class="summary">
-    <div><span>Horas</span><strong id="resHoras">0,00</strong></div>
-    <div><span>Turnos</span><strong id="resTurnos">0</strong></div>
-  </div>
-</section>
+      <label for="empleado">Empleado</label>
+      <select id="empleado">
+        <option value="">SELECCIONA EMPLEADO</option>
+      </select>
 
-<section class="card">
-  <div class="section-title"><h2>Últimos registros</h2><button id="exportarBtn" class="secondary">Exportar CSV</button></div>
-  <div id="lista" class="records"></div>
-</section>
+      <label for="fecha">Fecha</label>
+      <input id="fecha" type="date">
 
-<section class="card">
-  <details>
-    <summary>Gestionar empleados</summary>
-    <div class="add-employee"><input id="nuevoEmpleado" placeholder="Nombre del empleado"><button id="anadirEmpleadoBtn" class="secondary">Añadir</button></div>
-    <div id="empleadosLista" class="employee-list"></div>
-  </details>
-</section>
-</main>
+      <label for="turno">Turno</label>
+      <select id="turno">
+        <option value="COMIDA">COMIDA</option>
+        <option value="CENA">CENA</option>
+      </select>
 
-<template id="registroTpl">
-<article class="record">
-  <div class="record-main"><strong class="r-empleado"></strong><span class="r-detalle"></span><span class="r-estado"></span></div>
-  <div class="record-actions"><button class="editar secondary small">Editar</button><button class="eliminar danger small">Borrar</button></div>
-</article>
-</template>
-<script src="app.js"></script>
+      <label for="entrada">Entrada</label>
+      <input id="entrada" type="text" inputmode="numeric" placeholder="12 o 1230" autocomplete="off">
+
+      <label for="salida">Salida</label>
+      <input id="salida" type="text" inputmode="numeric" placeholder="16 o 1630" autocomplete="off">
+
+      <label for="observaciones">Observaciones</label>
+      <textarea id="observaciones" rows="3"></textarea>
+
+      <div class="hours-box">
+        <span>Horas</span>
+        <strong id="horas">0,00</strong>
+      </div>
+
+      <button id="guardarBtn" class="primary full">Guardar turno</button>
+      <p id="mensaje" class="message" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Sincronización</h2>
+        <button id="sincronizarBtn" class="secondary">Sincronizar ahora</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <span>Pendientes</span>
+          <strong id="pendientes">0</strong>
+        </div>
+        <div class="stat">
+          <span>Guardados online</span>
+          <strong id="sincronizados">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="summary-head">
+        <h2>Resumen<br>del mes</h2>
+        <select id="resumenEmpleado"></select>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <span>Horas</span>
+          <strong id="resHoras">0,00</strong>
+        </div>
+        <div class="stat">
+          <span>Turnos</span>
+          <strong id="resTurnos">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Últimos registros</h2>
+        <button id="exportarBtn" class="secondary">Exportar CSV</button>
+      </div>
+      <div id="lista"></div>
+    </section>
+
+    <section class="card">
+      <h2>Empleados</h2>
+      <div class="employee-add">
+        <input id="nuevoEmpleado" type="text" placeholder="Nombre del empleado">
+        <button id="anadirEmpleadoBtn" class="secondary">Añadir</button>
+      </div>
+      <div id="empleadosLista"></div>
+    </section>
+
+    <button id="installBtn" class="primary full hidden">Instalar aplicación</button>
+  </main>
+
+  <template id="registroTpl">
+    <article class="record">
+      <h3 class="r-empleado"></h3>
+      <p class="r-detalle"></p>
+      <p class="r-estado"></p>
+      <div class="record-actions">
+        <button class="editar secondary">Editar</button>
+        <button class="eliminar danger">Borrar</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js?v=5.0.0"></script>
 </body>
 </html>
